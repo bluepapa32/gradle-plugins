@@ -5,7 +5,7 @@ subprojects {
     apply plugin: 'maven'
 
     group = 'com.bluepapa32.gradle.plugins'
-    version = '1.0.0'
+    version = '0.1.0'
     archivesBaseName = "${group}.${name}"
 
     repositories {
