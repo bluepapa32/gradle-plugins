@@ -1,4 +1,4 @@
-package com.bluepapa32.gradle.plugins
+package com.bluepapa32.gradle.plugins.native2ascii
 
 import org.apache.tools.ant.filters.EscapeUnicode
 import org.gradle.api.Plugin
