@@ -12,8 +12,8 @@ subprojects {
     }
 
     dependencies {
-    compile gradleApi()
-    groovy localGroovy()
+        compile gradleApi()
+        groovy localGroovy()
     }
 
     uploadArchives {
