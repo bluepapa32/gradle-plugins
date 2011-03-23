@@ -1,3 +1,26 @@
+buildscript {
+    repositories {
+        mavenCentral();
+        mavenRepo urls: 'http://download.eclipse.org/jgit/maven'
+    }
+    dependencies {
+        classpath 'org.eclipse.jgit:org.eclipse.jgit:0.10.1'
+    }
+}
+
+import org.eclipse.jgit.*;
+import org.eclipse.jgit.api.*;
+import org.eclipse.jgit.lib.*;
+import org.eclipse.jgit.revwalk.*;
+import org.eclipse.jgit.treewalk.*;
+import org.eclipse.jgit.transport.*;
+
+mavenRepository = file('repos')
+remote = 'origin'
+branch = 'gh-pages'
+
+
+
 subprojects {
 
     apply plugin: 'java'
@@ -20,8 +43,21 @@ subprojects {
     uploadArchives {
         repositories {
             mavenDeployer {
-                repository(url: uri('../repos'))
+                repository(url: uri(mavenRepository))
             }
         }
+    } << {
+        def repos = new RepositoryBuilder()
+                        .setGitDir(new File(mavenRepository, ".git"))
+                        .setWorkTree(mavenRepository)
+                        .readEnvironment()
+                        .build();
+
+        def git = new Git(repos);
+        git.add().addFilepattern(".").call()
+        git.commit().setMessage("${archivesBaseName} ${version} release").call();
+        git.push().setRemote(remote).setRefSpecs(new RefSpec("${branch}:${branch}")).call()
+
+        repos.close()
     }
 }
